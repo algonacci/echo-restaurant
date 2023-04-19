@@ -89,30 +89,6 @@ func seedDB() {
 
 }
 
-func getFoodMenu(c echo.Context) error {
-	db, err := gorm.Open(postgres.Open(dbAddress))
-	if err != nil {
-		panic(err)
-	}
-	var menuData []MenuItem
-	db.Where(MenuItem{Type: MenuTypeFood}).Find(&menuData)
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": menuData,
-	})
-}
-
-func getDrinkMenu(c echo.Context) error {
-	db, err := gorm.Open(postgres.Open(dbAddress))
-	if err != nil {
-		panic(err)
-	}
-	var menuData []MenuItem
-	db.Where(MenuItem{Type: MenuTypeDrink}).Find(&menuData)
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": menuData,
-	})
-}
-
 func getMenu(c echo.Context) error {
 	menuType := c.FormValue("menu_type")
 	db, err := gorm.Open(postgres.Open(dbAddress))
