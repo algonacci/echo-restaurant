@@ -4,7 +4,9 @@ import (
 	"github.com/algonacci/echo-restaurant/internal/database"
 	"github.com/algonacci/echo-restaurant/internal/delivery/rest"
 	mRepo "github.com/algonacci/echo-restaurant/internal/repository/menu"
-	rUseCase "github.com/algonacci/echo-restaurant/internal/usecase/resto"
+	oRepo "github.com/algonacci/echo-restaurant/internal/repository/order"
+
+	rUsecase "github.com/algonacci/echo-restaurant/internal/usecase/resto"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,7 +18,8 @@ func main() {
 	e := echo.New()
 	db := database.GetDB(dbAddress)
 	menuRepo := mRepo.GetRepository(db)
-	restoUsecase := rUseCase.GetUseCase(menuRepo)
+	orderRepo := oRepo.GetRepository(db)
+	restoUsecase := rUsecase.GetUsecase(menuRepo, orderRepo)
 	h := rest.NewHandler(restoUsecase)
 	rest.LoadRoutes(e, h)
 	e.Logger.Fatal(e.Start(":8080"))
