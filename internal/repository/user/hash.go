@@ -56,7 +56,7 @@ func (ur *userRepo) comparePassword(password, hash string) (bool, error) {
 
 	switch parts[1] {
 	case "argon2id":
-		_, err := fmt.Scanf(parts[3], "m=%d,t=%d,p=%d", &memory, &time, &parallelism)
+		_, err := fmt.Sscanf(parts[3], "m=%d,t=%d,p=%d", &memory, &time, &parallelism)
 		if err != nil {
 			return false, err
 		}
