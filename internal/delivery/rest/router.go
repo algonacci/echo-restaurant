@@ -3,14 +3,16 @@ package rest
 import "github.com/labstack/echo/v4"
 
 func LoadRoutes(e *echo.Echo, handler *handler) {
+	authMiddleware := GetAuthMiddleware(handler.restoUsecase)
+
 	e.GET("/", handler.GetHelloWorld)
 
 	menuGroup := e.Group("/menu")
 	menuGroup.GET("/", handler.GetMenuList)
 
 	orderGroup := e.Group("/order")
-	orderGroup.POST("/", handler.Order)
-	orderGroup.GET("/:orderID", handler.GetOrderInfo)
+	orderGroup.POST("/", handler.Order, authMiddleware.CheckAuth)
+	orderGroup.GET("/:orderID", handler.GetOrderInfo, authMiddleware.CheckAuth)
 
 	userGroup := e.Group("/user")
 	userGroup.POST("/register", handler.RegisterUser)
